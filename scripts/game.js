@@ -53,30 +53,67 @@ for (let i = 0; i < random_word.length; i++) {
   word_div.append(letter_wrapper);
 }
 
-const letters = document.querySelectorAll(".answer-letter")
-const under = document.querySelectorAll(".under-letter")
+const letters = document.querySelectorAll(".answer-letter");
+const under = document.querySelectorAll(".under-letter");
 
-const clicked_letter = document.querySelectorAll(".letter")
 
-let tries_count = 6;
 
-clicked_letter.forEach((element, index) => {
-  element.addEventListener("click", (event) => {
-    const letter = element.innerText
-    let found = false
-    for (let i = 0; i < random_word.length; i++) {
-      if (random_word[i].toUpperCase() === letter) {
-        letters[i].style.visibility = "visible";
-        under[i].style.visibility = "hidden";
-        found = true;
-      }
+let valid_word = 0
+let tries_count = 0;
+const hang_parts = [head, body, leftHand, rightHand, leftLeg, rightLeg];
+
+function validateLetter(letter) {
+  let found = false;
+  for (let i = 0; i < random_word.length; i++) {
+    if (random_word[i].toUpperCase() === letter) {
+      letters[i].style.visibility = "visible";
+      under[i].style.visibility = "hidden";
+      found = true;
     }
+  } return found
+}
+
+const clickable_letters = document.querySelectorAll(".letter");
+
+let clicked_letter;
+
+clickable_letters.forEach((element) => {
+  element.addEventListener("click", function clicked(event) {
+    const letter = element.innerText
+    const found = validateLetter(letter)
+
     if (found) {
       element.style.background = "green"
-    } else {
+      valid_word++
+      console.log(valid_word)
+      char_set = new Set(random_word.split(""))
+      console.log(char_set)
+      if (valid_word === (char_set.size)) {
+        setTimeout(() => {
+          alert("you win")
+          window.location.href = window.location.href
+        }, 200);
+      }
 
+    } else {
       element.style.background = "red"
+      hang_parts[tries_count]();
+      tries_count++
+      console.log(tries_count)
+      if (tries_count >= 6) {
+        setTimeout(() => {
+          alert("YOU LOSE")
+          window.location.href = window.location.href
+        }, 200);
+
+      }
+
     }
+    element.removeEventListener("click", clicked)
   });
 });
+
+
+
+
 
