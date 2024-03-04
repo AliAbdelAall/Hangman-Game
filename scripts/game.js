@@ -124,7 +124,7 @@ function validateLetter(letter, element) {
 const clickable_letters = document.querySelectorAll(".letter")
 
 clickable_letters.forEach((element) => {
-  element.addEventListener("click", function clicked(event) {
+  element.addEventListener("click", function (event) {
     const letter = element.innerText
     validateLetter(letter, element)
   })
